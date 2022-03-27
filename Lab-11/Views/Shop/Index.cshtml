@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Lab_11.Models.Article>
+@{
+    ViewData["Title"] = "View";
+}
+<h1>Shop</h1>
+<h2>@ViewBag.CartMessage</h2>
+<div style="display: flex;">
+    <div class="cus-m-8 cus-simple-menu" style="width: 10rem; text-align: center;">     
+        <p class="no-margin">
+            <a asp-action="Refresh">All</a>
+        </p>
+        @foreach (var item in ViewBag.Categories)
+        {
+            <p class="no-margin">
+                <a asp-action="Index" asp-route-id="@item.Id">@item.Name</a>
+            </p>
+        }     
+    </div>
+    <div class="m-8" style="width:100%;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @if (item.ImagePath == null)
+                            {
+                                <img src="/upload/Question_mark.png" width=50 height=50/>
+                            }
+                            else
+                            {
+                                <img src="/@item.ImagePath" width=50 height=50/>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category.Name)
+                        </td>
+                        <td>
+                            <form asp-controller="Shop" asp-action="AddToCart" method="post">
+                                <button type="submit" name="id" value="@item.Id" class="btn btn-primary">Add to cart</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
